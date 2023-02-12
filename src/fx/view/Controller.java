@@ -2,6 +2,8 @@ package fx.view;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,20 +17,20 @@ import javafx.scene.control.TextField;
 
 public class Controller {
     
-    @FXML
-    private ListView<String> listView;    
-
-    @FXML
-    private TextField songName;
-    @FXML
-    private TextField artistName;    
-
+    @FXML private ListView<String> listView;    
+    @FXML private TextField songField;
+    @FXML private TextField artistField;
+    @FXML private TextField yearField;
+    @FXML private TextField albumField;
     private ObservableList<String> namesAndSongs = FXCollections.observableArrayList();
     
-    private HashMap<String, ArrayList<String>> artistToSong = new HashMap<>();
+    ArrayList<Song> songs = new ArrayList<>();
     
-    private boolean containsArtistAndSong(String artist, String song) {
-    	return artistToSong.containsKey(artistName.getText()) && artistToSong.get(artistName.getText()).contains(songName.getText());
+    public boolean contains(ArrayList<Song> songs, Song song) {
+    	for(Song s: songs) {
+    		if(s.equals(song)) return true;
+    	}
+    	return false;
     }
     
     public void initialize() {
@@ -39,10 +41,6 @@ public class Controller {
         }
     }
     
-    public static String formatEntry(String song, String artist) {
-    	return String.format("%-30s %-30s", song, artist);
-    }
-    
     /**
      * @param event
      * 
@@ -51,23 +49,31 @@ public class Controller {
      */
     @FXML
     public void handleAddSong(ActionEvent event) {
-//    	System.out.println(event.getSource());
-//    	System.out.println(artistName.getText());
-//    	System.out.println(songName.getText());
-    	if(containsArtistAndSong(artistName.getText(), songName.getText())) {
+    	Song newSong;
+    	try {
+        	newSong = new Song(songField.getText(), artistField.getText(), Integer.parseInt(yearField.getText()), albumField.getText());
+    	} catch(Exception e) {
+    		Alert alert = new Alert(AlertType.ERROR, 
+                    "All fields must not be empty and the year is a number.", 
+                    ButtonType.OK);
+        	alert.showAndWait();
+    		return; 
+    	}
+    	
+    	
+    	if(contains(songs, newSong)) {
     		Alert alert = new Alert(AlertType.ERROR, 
                     "Song already exists in playlist", 
                     ButtonType.OK);
         	alert.showAndWait();
     	}
     	else {
-    		ArrayList<String> songs = artistToSong.get(artistName.getText())==null?new ArrayList<>():artistToSong.get(artistName.getText());
-    		songs.add(songName.getText());
-    		artistToSong.put(artistName.getText(), songs);
+    		songs.add(newSong);
     		// add to observable list so the GUI refreshes
-    		namesAndSongs.add(formatEntry(songName.getText(), artistName.getText()));
+    		namesAndSongs.add(newSong.toString());
         	// sort in alphabetical order
         	Collections.sort(namesAndSongs);
+        	Collections.sort(songs);
         	
         	if(namesAndSongs.size()>0) {
                 listView.getSelectionModel().select(0);
@@ -75,39 +81,11 @@ public class Controller {
     	}
     }
     
-   
-    
     
     @FXML
     public void handleEdit(ActionEvent event) {
-    	int selected = listView.getSelectionModel().getSelectedIndex();
-//    	System.out.println(selected);
-    	if(selected == -1) {
-    		Alert alert = new Alert(AlertType.WARNING, "Please select a song to edit", ButtonType.OK);
-    		alert.showAndWait();
-    	}else {
-    		if(containsArtistAndSong(artistName.getText(), songName.getText())) {
-        		// display alert
-            	Alert error = new Alert(AlertType.ERROR, 
-                        "Song already exists in playlist", 
-                        ButtonType.OK);
-            	error.showAndWait();
-        	
-        	}
-    		else {
-//    			names.set(selected, artistName.getText());
-//            	songs.set(selected, songName.getText());
-    			
-    			ArrayList<String> songs = artistToSong.get(artistName.getText())==null?new ArrayList<>():artistToSong.get(artistName.getText());
-    	    	songs.add(songName.getText());
-    			artistToSong.put(artistName.getText(), songs);
-    			namesAndSongs.set(selected, formatEntry(songName.getText(), artistName.getText()));
-            	Collections.sort(namesAndSongs);
-            	if(namesAndSongs.size()>0) {
-                    listView.getSelectionModel().select(0);
-                }
-    		}
+    	for(Song s: songs) {
+    		System.out.println(s);
     	}
     }
-    
 }
