@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.view.SongViewController">
+   <children>
+      <TextArea fx:id="name" editable="false" focusTraversable="false" layoutX="103.0" layoutY="93.0" prefHeight="39.0" prefWidth="390.0" />
+      <TextArea fx:id="artist" editable="false" focusTraversable="false" layoutX="103.0" layoutY="156.0" prefHeight="39.0" prefWidth="390.0" />
+      <TextArea fx:id="album" editable="false" focusTraversable="false" layoutX="103.0" layoutY="219.0" prefHeight="39.0" prefWidth="390.0" />
+      <TextArea fx:id="year" editable="false" focusTraversable="false" layoutX="103.0" layoutY="282.0" prefHeight="39.0" prefWidth="390.0" />
+      <Button fx:id="edit" alignment="CENTER" layoutX="188.0" layoutY="363.0" mnemonicParsing="false" onAction="#handleEdit" prefHeight="39.0" prefWidth="126.0" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" blendMode="HARD_LIGHT" layoutX="152.0" layoutY="29.0" prefHeight="33.0" prefWidth="202.0" text="Song Information" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="93.0" prefHeight="39.0" prefWidth="62.0" text="Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="156.0" prefHeight="39.0" prefWidth="62.0" text="Artist">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="219.0" prefHeight="39.0" prefWidth="62.0" text="Album">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="14.0" layoutY="282.0" prefHeight="39.0" prefWidth="62.0" text="Year">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="newName" layoutX="103.0" layoutY="93.0" prefHeight="39.0" prefWidth="390.0" visible="false" />
+      <TextField fx:id="newArtist" layoutX="103.0" layoutY="156.0" prefHeight="39.0" prefWidth="390.0" visible="false" />
+      <TextField fx:id="newAlbum" layoutX="103.0" layoutY="219.0" prefHeight="39.0" prefWidth="390.0" visible="false" />
+      <TextField fx:id="newYear" layoutX="103.0" layoutY="282.0" prefHeight="39.0" prefWidth="390.0" visible="false" />
+      <Button fx:id="cancel" layoutX="88.0" layoutY="363.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="39.0" prefWidth="126.0" text="Cancel" textAlignment="CENTER" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="confirm" layoutX="291.0" layoutY="363.0" mnemonicParsing="false" onAction="#handleConfirm" prefHeight="39.0" prefWidth="126.0" text="Confirm" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="back" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+   </children>
+</AnchorPane>

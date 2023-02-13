@@ -1,19 +1,22 @@
 package fx.view;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.Parent;
+import javafx.stage.Stage;
 
 public class Controller {
     
@@ -22,9 +25,25 @@ public class Controller {
     @FXML private TextField artistField;
     @FXML private TextField yearField;
     @FXML private TextField albumField;
-    private ObservableList<String> namesAndSongs = FXCollections.observableArrayList();
+    private static ObservableList<String> namesAndSongs = FXCollections.observableArrayList();
     
-    ArrayList<Song> songs = new ArrayList<>();
+    private static ArrayList<Song> songs = new ArrayList<>();
+    
+    public static ArrayList<Song> getSongs() {
+    	return songs;
+    }
+    
+    public static void setSongs(ArrayList<Song> newList) {
+    	songs = newList;
+    }
+    
+    public static ObservableList<String> getObsList() {
+    	return namesAndSongs;
+    }
+    
+    public static void setObsList(ObservableList<String> n) {
+    	namesAndSongs = n;
+    }
     
     public boolean contains(ArrayList<Song> songs, Song song) {
     	for(Song s: songs) {
@@ -36,6 +55,23 @@ public class Controller {
     public void initialize() {
     	// load in the data from a text file here
         listView.setItems(namesAndSongs);
+        listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        	
+        	@Override
+        	public void handle(MouseEvent event) {
+        		int choice = listView.getSelectionModel().getSelectedIndex();
+        		Song clickedSong = songs.get(choice);
+        		SongViewController.setSong(clickedSong);
+        		Stage curr = (Stage) listView.getScene().getWindow();
+        		try {
+        			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/SongView.fxml"));
+        			Scene newScene = new Scene(root);
+        			curr.setScene(newScene);
+        			curr.show();
+        		} catch (Exception e) {}
+        	}
+        	
+        });
         if(namesAndSongs.size()>0) {
             listView.getSelectionModel().select(0);
         }
