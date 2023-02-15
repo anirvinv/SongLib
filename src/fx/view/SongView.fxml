@@ -58,5 +58,6 @@
          </font>
       </Button>
       <Button fx:id="back" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+      <Button layoutX="375.0" layoutY="22.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="83.0" text="Delete" />
    </children>
 </AnchorPane>

@@ -90,7 +90,7 @@ public class Controller {
         	newSong = new Song(songField.getText(), artistField.getText(), Integer.parseInt(yearField.getText()), albumField.getText());
     	} catch(Exception e) {
     		Alert alert = new Alert(AlertType.ERROR, 
-                    "All fields must not be empty and the year is a number.", 
+                    "All fields must not be empty and the year is a 4 digit number.", 
                     ButtonType.OK);
         	alert.showAndWait();
     		return; 

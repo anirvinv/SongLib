@@ -93,6 +93,13 @@ public class SongViewController {
 		confirm.setVisible(true);
 		cancel.setVisible(true);
 		back.setVisible(false);
+
+		// default edit values will be the existing name, artist, year, album
+		newName.setText(name.getText());
+		newArtist.setText(artist.getText());
+		newYear.setText(year.getText());
+		newAlbum.setText(album.getText());
+
 	}
 	
 	@FXML
@@ -118,6 +125,13 @@ public class SongViewController {
 	
 	@FXML
 	public void handleConfirm(ActionEvent event) {
+		/*
+		 * 
+		 * bug: if you press edit, and then confirm without making changes, it doesn't work
+		 * 
+		 */
+
+
 		// Grab song list and changed values, set error booleans
 		ArrayList<Song> songs = Controller.getSongs();
 		ObservableList<String> songsAndNames = Controller.getObsList();
