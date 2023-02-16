@@ -18,41 +18,56 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 
 public class SongViewController {
-	
+
 	/*
 	 * 
 	 * Variables, getters, setters
 	 * 
 	 */
-	
-	@FXML private TextArea name;
-	@FXML private TextArea artist;
-	@FXML private TextArea album;
-	@FXML private TextArea year;
-	@FXML private TextField newName;
-	@FXML private TextField newArtist;
-	@FXML private TextField newAlbum;
-	@FXML private TextField newYear;
-	@FXML private Button edit;
-	@FXML private Button confirm;
-	@FXML private Button cancel;
-	@FXML private Button back;
+
+	@FXML
+	private TextArea name;
+	@FXML
+	private TextArea artist;
+	@FXML
+	private TextArea album;
+	@FXML
+	private TextArea year;
+	@FXML
+	private TextField newName;
+	@FXML
+	private TextField newArtist;
+	@FXML
+	private TextField newAlbum;
+	@FXML
+	private TextField newYear;
+	@FXML
+	private Button edit;
+	@FXML
+	private Button confirm;
+	@FXML
+	private Button cancel;
+	@FXML
+	private Button back;
+	@FXML
+	private Button deleteButton;
+
 	private static Song selectedSong;
-	
+
 	public static void setSong(Song s) {
 		selectedSong = s;
 	}
-	
+
 	public static Song getSong() {
 		return selectedSong;
 	}
-	
+
 	/*
 	 * 
 	 * Startup
 	 * 
 	 */
-	
+
 	public void initialize() {
 		// Use the selected song to fill in the initial text areas
 		name.setText(selectedSong.getName());
@@ -60,13 +75,13 @@ public class SongViewController {
 		album.setText(selectedSong.getAlbum());
 		year.setText(Integer.toString(selectedSong.getYear()));
 	}
-	
+
 	/*
 	 * 
 	 * Event handling
 	 * 
 	 */
-	
+
 	@FXML
 	public void handleBack(ActionEvent event) {
 		Stage curr = (Stage) back.getScene().getWindow();
@@ -75,9 +90,10 @@ public class SongViewController {
 			Scene newScene = new Scene(root);
 			curr.setScene(newScene);
 			curr.show();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
-	
+
 	@FXML
 	public void handleEdit(ActionEvent event) {
 		// Change the scene to edit mode
@@ -101,7 +117,7 @@ public class SongViewController {
 		newAlbum.setText(album.getText());
 
 	}
-	
+
 	@FXML
 	public void handleCancel(ActionEvent event) {
 		// Change scene back to presentation mode
@@ -122,15 +138,15 @@ public class SongViewController {
 		cancel.setVisible(false);
 		back.setVisible(true);
 	}
-	
+
 	@FXML
 	public void handleConfirm(ActionEvent event) {
 		/*
 		 * 
-		 * bug: if you press edit, and then confirm without making changes, it doesn't work
+		 * bug: if you press edit, and then confirm without making changes, it doesn't
+		 * work
 		 * 
 		 */
-
 
 		// Grab song list and changed values, set error booleans
 		ArrayList<Song> songs = Controller.getSongs();
@@ -149,7 +165,10 @@ public class SongViewController {
 			if (changedArtist.isEmpty()) {
 				changedArtist = selectedSong.getArtist();
 			}
-			for (Song curr: songs) {
+			// FIX: check to see that there is only one occurrence of name,artist in the
+			// song arraylist
+
+			for (Song curr : songs) {
 				if (curr.getName().equals(changedName) && curr.getArtist().equals(changedArtist)) {
 					nameError = true;
 				}
@@ -169,14 +188,15 @@ public class SongViewController {
 		}
 		// Send appropriate error or update
 		if (nameError && yearError) {
-			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist, year must be 4 digit number", ButtonType.OK);
-        	alert.showAndWait();
+			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist, year must be 4 digit number",
+					ButtonType.OK);
+			alert.showAndWait();
 		} else if (nameError) {
 			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist", ButtonType.OK);
-        	alert.showAndWait();
+			alert.showAndWait();
 		} else if (yearError) {
 			Alert alert = new Alert(AlertType.ERROR, "Year must be 4 digit number", ButtonType.OK);
-        	alert.showAndWait();
+			alert.showAndWait();
 		} else {
 			if (changedName.isEmpty()) {
 				changedName = selectedSong.getName();
@@ -226,4 +246,24 @@ public class SongViewController {
 		cancel.setVisible(false);
 		back.setVisible(true);
 	}
+
+	@FXML
+	public void handleDelete(ActionEvent event) {
+		// Needs to be tested, but this probably works
+
+		ArrayList<Song> songs = Controller.getSongs();
+		ObservableList<String> songsAndNames = Controller.getObsList();
+		songsAndNames.remove(selectedSong.toString());
+		songs.remove(selectedSong);
+
+		Stage curr = (Stage) back.getScene().getWindow();
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/sample.fxml"));
+			Scene newScene = new Scene(root);
+			curr.setScene(newScene);
+			curr.show();
+		} catch (Exception e) {
+		}
+	}
+
 }
