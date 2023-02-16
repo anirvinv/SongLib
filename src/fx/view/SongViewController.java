@@ -169,7 +169,7 @@ public class SongViewController {
 				changedArtist = selectedSong.getArtist();
 			}
 			// BUG: can't press edit and then confirm without changing the name or artist
-			// FIX: we can remove the current song before even checking to see if the new
+			// FIXED: we can remove the current song before even checking to see if the new
 			// song exists. Add it back if the confirmation causes an error so we don't lose
 			// data
 			songs.remove(selectedSong);
