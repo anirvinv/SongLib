@@ -47,26 +47,6 @@ public class App extends Application {
         	}
         	
         });
-        try {
-    		File input = new File("src/Songs.txt");
-        	if (input.exists()) {
-        		Scanner fileScan = new Scanner(input);
-        		ObservableList<String> namesAndSongs = FXCollections.observableArrayList();
-        		ArrayList<Song> songs = new ArrayList<Song>();
-        		while (fileScan.hasNextLine()) {
-        			String currLine = fileScan.nextLine();
-        			namesAndSongs.add(currLine);
-        			String[] details = currLine.split("\\s+");
-        			Song newSong = new Song(details[0], details[1], Integer.parseInt(details[2]), details[3]);
-        			songs.add(newSong);
-        		}
-        		Controller.setSongs(songs);
-        		Controller.setObsList(namesAndSongs);
-        		fileScan.close();
-        	}
-    	} catch (Exception e) {
-    		System.out.println(e);
-    	}
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
