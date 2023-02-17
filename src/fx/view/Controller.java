@@ -1,6 +1,8 @@
 package fx.view;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,7 +29,9 @@ public class Controller {
     @FXML private TextField albumField;
     private static ObservableList<String> namesAndSongs = FXCollections.observableArrayList();
     
-    private static ArrayList<Song> songs = new ArrayList<>();
+    private static ArrayList<Song> songs = new ArrayList<Song>();
+    
+    private static boolean ran = false;
     
     public static ArrayList<Song> getSongs() {
     	return songs;
@@ -53,7 +57,25 @@ public class Controller {
     }
     
     public void initialize() {
-    	// load in the data from a text file here
+    	if (!ran) {
+    		try {
+        		File input = new File("src/Songs.txt");
+            	if (input.exists()) {
+            		Scanner fileScan = new Scanner(input);
+            		while (fileScan.hasNextLine()) {
+            			String currLine = fileScan.nextLine();
+            			namesAndSongs.add(currLine);
+            			String[] details = currLine.split("\\s+");
+            			Song newSong = new Song(details[0], details[1], Integer.parseInt(details[2]), details[3]);
+            			songs.add(newSong);
+            		}
+            		fileScan.close();
+            	}
+        	} catch (Exception e) {
+        		System.out.println(e);
+        	}
+    		ran = true;
+    	}
         listView.setItems(namesAndSongs);
         listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
         	
