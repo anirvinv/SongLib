@@ -138,12 +138,4 @@ public class Controller {
             }
     	}
     }
-    
-    
-    @FXML
-    public void handleEdit(ActionEvent event) {
-    	for(Song s: songs) {
-    		System.out.println(s);
-    	}
-    }
 }

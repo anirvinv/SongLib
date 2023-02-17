@@ -86,7 +86,7 @@ public class SongViewController {
 	public void handleBack(ActionEvent event) {
 		Stage curr = (Stage) back.getScene().getWindow();
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/sample.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
 			Scene newScene = new Scene(root);
 			curr.setScene(newScene);
 			curr.show();
@@ -276,7 +276,7 @@ public class SongViewController {
 
 		Stage curr = (Stage) back.getScene().getWindow();
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/sample.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
 			Scene newScene = new Scene(root);
 			curr.setScene(newScene);
 			curr.show();
