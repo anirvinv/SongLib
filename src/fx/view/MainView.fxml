@@ -6,9 +6,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.view.Controller">
+<AnchorPane stylesheets="@main.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.view.Controller">
    <children>
-      <ListView fx:id="listView" layoutX="27.0" layoutY="95.0" prefHeight="324.0" prefWidth="405.0" />
+      <ListView styleClass="songList" fx:id="listView" layoutX="27.0" layoutY="95.0" prefHeight="324.0" prefWidth="405.0" />
       <TextField fx:id="songField" layoutX="24.0" layoutY="36.0" prefHeight="26.0" prefWidth="80.0" />
       <TextField fx:id="artistField" layoutX="112.0" layoutY="35.0" prefHeight="26.0" prefWidth="90.0" />
       <TextField fx:id="yearField" layoutX="216.0" layoutY="36.0" prefHeight="26.0" prefWidth="66.0" />

@@ -27,10 +27,10 @@ public class Song implements Comparable<Song> {
 
 	@Override
 	public int compareTo(Song other) {
-		if (name.compareTo(other.getName()) == 0) {
-			return artist.compareTo(other.getArtist());
+		if (name.toLowerCase().compareTo(other.getName().toLowerCase()) == 0) {
+			return artist.toLowerCase().compareTo(other.getArtist().toLowerCase());
 		}
-		return name.compareTo(other.getName());
+		return name.toLowerCase().compareTo(other.getName().toLowerCase());
 	}
 
 	public boolean equals(Song other) {
@@ -38,7 +38,11 @@ public class Song implements Comparable<Song> {
 	}
 
 	public String toString() {
-		return String.format("%-30s %-30s %-30d %-30s", name, artist, year, album);
+		return String.format("%-30s %-30s", name, artist);
+	}
+
+	public String toFileString() {
+		return String.format("%s\n%s\n%s\n%s\n\n", name, artist, year, album);
 	}
 
 	public String getName() {

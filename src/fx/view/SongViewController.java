@@ -269,19 +269,27 @@ public class SongViewController {
 	public void handleDelete(ActionEvent event) {
 		// Needs to be tested, but this probably works
 
-		ArrayList<Song> songs = Controller.getSongs();
-		ObservableList<String> songsAndNames = Controller.getObsList();
-		songsAndNames.remove(selectedSong.toString());
-		songs.remove(selectedSong);
+		Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure?",
+				ButtonType.YES, ButtonType.CANCEL);
+		alert.showAndWait();
+		if (alert.getResult() == ButtonType.YES) {
+			ArrayList<Song> songs = Controller.getSongs();
+			ObservableList<String> songsAndNames = Controller.getObsList();
+			songsAndNames.remove(selectedSong.toString());
+			songs.remove(selectedSong);
 
-		Stage curr = (Stage) back.getScene().getWindow();
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
-			Scene newScene = new Scene(root);
-			curr.setScene(newScene);
-			curr.show();
-		} catch (Exception e) {
+			Stage curr = (Stage) back.getScene().getWindow();
+			try {
+				Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
+				Scene newScene = new Scene(root);
+				curr.setScene(newScene);
+				curr.show();
+			} catch (Exception e) {
+			}
+		} else {
+			return;
 		}
+
 	}
 
 }

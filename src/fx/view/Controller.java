@@ -63,24 +63,37 @@ public class Controller {
 		return false;
 	}
 
-	public void initialize() {
+	public void initialize() throws Exception {
 		if (!ran) {
+			boolean dataCorrupted = false;
 			try {
 				File input = new File("src/Songs.txt");
 				if (input.exists()) {
 					Scanner fileScan = new Scanner(input);
+
+					ArrayList<String> lines = new ArrayList<>();
+
 					while (fileScan.hasNextLine()) {
 						String currLine = fileScan.nextLine();
-						namesAndSongs.add(currLine);
-						String[] details = currLine.split("\\s+");
-						Song newSong = new Song(details[0], details[1], Integer.parseInt(details[2]), details[3]);
-						songs.add(newSong);
+						lines.add(currLine);
 					}
 					fileScan.close();
+					dataCorrupted = lines.size() % 5 != 0;
+					if (!dataCorrupted) {
+						for (int i = 0; i < lines.size(); i += 5) {
+							Song newSong = new Song(lines.get(i), lines.get(i + 1), Integer.parseInt(lines.get(i + 2)),
+									lines.get(i + 3));
+							namesAndSongs.add(newSong.toString());
+							songs.add(newSong);
+						}
+					}
 				}
 			} catch (Exception e) {
 				System.out.println(e);
 			}
+			if (dataCorrupted)
+				throw new Exception("data corrupted");
+
 			ran = true;
 		}
 		listView.setItems(namesAndSongs);
@@ -135,15 +148,23 @@ public class Controller {
 					ButtonType.OK);
 			alert.showAndWait();
 		} else {
-			songs.add(newSong);
-			// add to observable list so the GUI refreshes
-			namesAndSongs.add(newSong.toString());
-			// sort in alphabetical order
-			Collections.sort(namesAndSongs);
-			Collections.sort(songs);
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure?",
+					ButtonType.YES, ButtonType.CANCEL);
+			alert.showAndWait();
 
-			if (namesAndSongs.size() > 0) {
-				listView.getSelectionModel().select(0);
+			if (alert.getResult() == ButtonType.YES) {
+				// add to observable list so the GUI refreshes
+				namesAndSongs.add(newSong.toString());
+				songs.add(newSong);
+				// sort in alphabetical order
+				Collections.sort(namesAndSongs);
+				Collections.sort(songs);
+
+				if (namesAndSongs.size() > 0) {
+					listView.getSelectionModel().select(0);
+				}
+			} else {
+				return;
 			}
 		}
 	}

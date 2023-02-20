@@ -18,7 +18,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class App extends Application {
+public class SongLib extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -28,20 +28,20 @@ public class App extends Application {
 
             public void handle(WindowEvent event) {
                 try {
-                    ObservableList<String> currSongs = Controller.getObsList();
                     ArrayList<Song> songs = Controller.getSongs();
                     File oldList = new File("src/Songs.txt");
                     if (oldList.exists()) {
                         oldList.delete();
                     }
-                    if (!songs.isEmpty()) {
-                        File newList = new File("src/Songs.txt");
-                        FileWriter writer = new FileWriter(newList);
-                        for (String curr : currSongs) {
-                            writer.write(curr + "\n");
-                        }
-                        writer.close();
+
+                    File newList = new File("src/Songs.txt");
+                    newList.createNewFile();
+                    FileWriter writer = new FileWriter(newList);
+                    for (Song song : songs) {
+                        writer.write(song.toFileString());
                     }
+                    writer.close();
+
                 } catch (Exception e) {
                     System.out.println(e);
                 }
