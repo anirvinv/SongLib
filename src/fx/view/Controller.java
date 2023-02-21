@@ -52,7 +52,17 @@ public class Controller {
 
 	private static ArrayList<Song> songs = new ArrayList<Song>();
 
+	private static int selectedSongIndex = -1;
+
 	private static boolean ran = false;
+
+	public static void setSelectedSongIndex(int selectedSongIndex) {
+		Controller.selectedSongIndex = selectedSongIndex;
+	}
+
+	public static int getSelectedSongIndex() {
+		return selectedSongIndex;
+	}
 
 	public static ArrayList<Song> getSongs() {
 		return songs;
@@ -111,6 +121,8 @@ public class Controller {
 			ran = true;
 		}
 		listView.setItems(namesAndSongs);
+		listView.getSelectionModel().select(Controller.selectedSongIndex != -1 ? selectedSongIndex : 0);
+
 		listView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -179,9 +191,11 @@ public class Controller {
 				Collections.sort(namesAndSongs);
 				Collections.sort(songs);
 
-				if (namesAndSongs.size() > 0) {
-					listView.getSelectionModel().select(0);
-				}
+				listView.getSelectionModel().select(namesAndSongs.indexOf(newSong.toString()));
+
+				int choice = namesAndSongs.indexOf(newSong.toString());
+				Song clickedSong = songs.get(choice);
+				SongViewController.setSong(clickedSong);
 			} else {
 				return;
 			}

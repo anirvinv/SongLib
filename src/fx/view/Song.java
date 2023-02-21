@@ -19,8 +19,8 @@ public class Song implements Comparable<Song> {
 			throw new IllegalArgumentException();
 		}
 
-		this.name = name;
-		this.artist = artist;
+		this.name = name.trim();
+		this.artist = artist.trim();
 		this.year = year;
 		this.album = album;
 	}

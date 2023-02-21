@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -89,8 +88,6 @@ public class SongViewController {
 		String changedYear = newYear.getText();
 		boolean nameError = false;
 		boolean yearError = false;
-		Song selectedSongClone = new Song(selectedSong.getName(), selectedSong.getArtist(), selectedSong.getYear(),
-				selectedSong.getAlbum());
 		// Check to see if song already exists
 		if (!(changedName.isEmpty() && changedArtist.isEmpty())) {
 			if (changedName.isEmpty()) {
@@ -164,6 +161,8 @@ public class SongViewController {
 			setSong(newSong);
 			Controller.setSongs(songs);
 			Controller.setObsList(songsAndNames);
+
+			Controller.setSelectedSongIndex(songs.indexOf(newSong));
 		}
 		// Send back to main scene
 		Stage curr = (Stage) confirm.getScene().getWindow();
