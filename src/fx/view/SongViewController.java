@@ -242,6 +242,8 @@ public class SongViewController {
 			setSong(newSong);
 			Controller.setSongs(songs);
 			Controller.setObsList(songsAndNames);
+
+			Controller.setSelectedSongIndex(songs.indexOf(newSong));
 		}
 		// Reconfigure scene
 		name.setText(selectedSong.getName());
