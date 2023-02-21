@@ -47,7 +47,7 @@ public class Controller {
 	private Button editButton;
 	@FXML
 	private Button deleteButton;
-	
+
 	private static ObservableList<String> namesAndSongs = FXCollections.observableArrayList();
 
 	private static ArrayList<Song> songs = new ArrayList<Song>();
@@ -86,6 +86,13 @@ public class Controller {
 				return true;
 		}
 		return false;
+	}
+
+	public static String displayYear(int year) {
+		if (year == -1)
+			return "";
+		else
+			return year + "";
 	}
 
 	public void initialize() throws Exception {
@@ -135,7 +142,7 @@ public class Controller {
 				nameLabel.setText("Name: " + clickedSong.getName());
 				artistLabel.setText("Artist: " + clickedSong.getArtist());
 				albumLabel.setText("Album: " + clickedSong.getAlbum());
-				yearLabel.setText("Year: " + String.valueOf(clickedSong.getYear()));
+				yearLabel.setText("Year: " + displayYear(clickedSong.getYear()));
 			}
 
 		});
@@ -144,7 +151,7 @@ public class Controller {
 			nameLabel.setText("Name: " + songs.get(0).getName());
 			artistLabel.setText("Artist: " + songs.get(0).getArtist());
 			albumLabel.setText("Album: " + songs.get(0).getAlbum());
-			yearLabel.setText("Year: " + String.valueOf(songs.get(0).getYear()));
+			yearLabel.setText("Year: " + displayYear(songs.get(0).getYear()));
 			editButton.setVisible(true);
 			deleteButton.setVisible(true);
 		}
@@ -163,11 +170,12 @@ public class Controller {
 	public void handleAddSong(ActionEvent event) {
 		Song newSong;
 		try {
-			newSong = new Song(songField.getText(), artistField.getText(), Integer.parseInt(yearField.getText()),
+			newSong = new Song(songField.getText(), artistField.getText(),
+					yearField.getText().equals("") ? -1 : Integer.parseInt(yearField.getText()),
 					albumField.getText());
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR,
-					"All fields must not be empty and the year is a 4 digit number.",
+					"Name and artist are required. If specified, year must be a 4 digit number",
 					ButtonType.OK);
 			alert.showAndWait();
 			return;
@@ -205,7 +213,7 @@ public class Controller {
 			nameLabel.setText("Name: " + songs.get(0).getName());
 			artistLabel.setText("Artist: " + songs.get(0).getArtist());
 			albumLabel.setText("Album: " + songs.get(0).getAlbum());
-			yearLabel.setText("Year: " + String.valueOf(songs.get(0).getYear()));
+			yearLabel.setText("Year: " + displayYear(songs.get(0).getYear()));
 			editButton.setVisible(true);
 			deleteButton.setVisible(true);
 		} else if (songs.size() > 1) {
@@ -213,12 +221,14 @@ public class Controller {
 			nameLabel.setText("Name: " + newSong.getName());
 			artistLabel.setText("Artist: " + newSong.getArtist());
 			albumLabel.setText("Album: " + newSong.getAlbum());
-			yearLabel.setText("Year: " + String.valueOf(newSong.getYear()));
+			yearLabel.setText("Year: " + displayYear(newSong.getYear()));
 		}
 	}
+
 	@FXML
 	public void handleEdit(ActionEvent event) {
 		Stage curr = (Stage) listView.getScene().getWindow();
+		Controller.selectedSongIndex = listView.getSelectionModel().getSelectedIndex();
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/SongView.fxml"));
 			Scene newScene = new Scene(root);
@@ -228,6 +238,7 @@ public class Controller {
 			System.out.println(e);
 		}
 	}
+
 	@FXML
 	public void handleDelete(ActionEvent event) {
 		// Needs to be tested, but this probably works
@@ -240,28 +251,29 @@ public class Controller {
 			songIndex = songs.lastIndexOf(selectedSong);
 			namesAndSongs.remove(selectedSong.toString());
 			songs.remove(selectedSong);
-		}
-		if (songs.isEmpty()) {
-			nameLabel.setText("Name: ");
-			artistLabel.setText("Artist: ");
-			albumLabel.setText("Album: ");
-			yearLabel.setText("Year: ");
-			editButton.setVisible(false);
-			deleteButton.setVisible(false);
-		} else {
-			Song selectedSong;
-			if (songIndex == 0) {
-				selectedSong = songs.get(0);
-			} else if (songIndex == songs.size()){
-				selectedSong = songs.get(songIndex - 1);
+			if (songs.isEmpty()) {
+				nameLabel.setText("Name: ");
+				artistLabel.setText("Artist: ");
+				albumLabel.setText("Album: ");
+				yearLabel.setText("Year: ");
+				editButton.setVisible(false);
+				deleteButton.setVisible(false);
 			} else {
-				selectedSong = songs.get(songIndex);
+				if (songIndex == songs.size()) {
+					songIndex--;
+					selectedSong = songs.get(songIndex);
+				} else {
+					selectedSong = songs.get(songIndex);
+				}
+				SongViewController.setSong(selectedSong);
+				listView.getSelectionModel().select(songIndex);
+
+				nameLabel.setText("Name: " + selectedSong.getName());
+				artistLabel.setText("Artist: " + selectedSong.getArtist());
+				albumLabel.setText("Album: " + selectedSong.getAlbum());
+				yearLabel.setText("Year: " + displayYear(selectedSong.getYear()));
 			}
-			SongViewController.setSong(selectedSong);
-			nameLabel.setText("Name: " + selectedSong.getName());
-			artistLabel.setText("Artist: " + selectedSong.getArtist());
-			albumLabel.setText("Album: " + selectedSong.getAlbum());
-			yearLabel.setText("Year: " + String.valueOf(selectedSong.getYear()));
 		}
+
 	}
 }

@@ -54,6 +54,12 @@ public class SongViewController {
 	 */
 
 	public void initialize() {
+
+		newName.setText(selectedSong.getName());
+		newArtist.setText(selectedSong.getArtist());
+		newYear.setText(selectedSong.getYear() == -1 ? "" : selectedSong.getYear() + "");
+		newAlbum.setText(selectedSong.getAlbum());
+
 		return;
 	}
 
@@ -88,6 +94,8 @@ public class SongViewController {
 		String changedYear = newYear.getText();
 		boolean nameError = false;
 		boolean yearError = false;
+		Song selectedSongClone = new Song(selectedSong.getName(), selectedSong.getArtist(), selectedSong.getYear(),
+				selectedSong.getAlbum());
 		// Check to see if song already exists
 		if (!(changedName.isEmpty() && changedArtist.isEmpty())) {
 			if (changedName.isEmpty()) {
@@ -100,6 +108,10 @@ public class SongViewController {
 			// FIXED: we can remove the current song before even checking to see if the new
 			// song exists. Add it back if the confirmation causes an error so we don't lose
 			// data
+
+			songs.remove(selectedSong);
+			songsAndNames.remove(selectedSong.toString());
+
 			for (Song curr : songs) {
 				if (curr.getName().equals(changedName) && curr.getArtist().equals(changedArtist)) {
 					nameError = true;
@@ -120,17 +132,23 @@ public class SongViewController {
 		}
 		// Send appropriate error or update
 		if (nameError && yearError) {
+			songs.add(selectedSongClone);
+			songsAndNames.add(selectedSongClone.toString());
 			Collections.sort(songs);
 			Collections.sort(songsAndNames);
 			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist, year must be 4 digit number",
 					ButtonType.OK);
 			alert.showAndWait();
 		} else if (nameError) {
+			songs.add(selectedSongClone);
+			songsAndNames.add(selectedSongClone.toString());
 			Collections.sort(songs);
 			Collections.sort(songsAndNames);
 			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist", ButtonType.OK);
 			alert.showAndWait();
 		} else if (yearError) {
+			songs.add(selectedSongClone);
+			songsAndNames.add(selectedSongClone.toString());
 			Collections.sort(songs);
 			Collections.sort(songsAndNames);
 			Alert alert = new Alert(AlertType.ERROR, "Year must be 4 digit number", ButtonType.OK);
@@ -152,8 +170,7 @@ public class SongViewController {
 				changedAlbum = selectedSong.getAlbum();
 			}
 			Song newSong = new Song(changedName, changedArtist, changedYear2, changedAlbum);
-			songs.remove(selectedSong);
-			songsAndNames.remove(selectedSong.toString());
+
 			songs.add(newSong);
 			songsAndNames.add(newSong.toString());
 			Collections.sort(songs);

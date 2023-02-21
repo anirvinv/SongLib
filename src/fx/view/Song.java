@@ -15,7 +15,7 @@ public class Song implements Comparable<Song> {
 	 */
 	public Song(String name, String artist, int year, String album) {
 
-		if (name.length() == 0 || artist.length() == 0 || album.length() == 0 || (year < 1000 || year > 9999)) {
+		if (name.length() == 0 || artist.length() == 0 || (year != -1 && (year > 9999 || year < 1000))) {
 			throw new IllegalArgumentException();
 		}
 
