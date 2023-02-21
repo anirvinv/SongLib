@@ -1,3 +1,5 @@
+// Sean Read and Anirvin Vaddiyar
+
 package fx.view;
 
 public class Song implements Comparable<Song> {
