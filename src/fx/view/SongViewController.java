@@ -26,14 +26,6 @@ public class SongViewController {
 	 */
 
 	@FXML
-	private TextArea name;
-	@FXML
-	private TextArea artist;
-	@FXML
-	private TextArea album;
-	@FXML
-	private TextArea year;
-	@FXML
 	private TextField newName;
 	@FXML
 	private TextField newArtist;
@@ -42,15 +34,9 @@ public class SongViewController {
 	@FXML
 	private TextField newYear;
 	@FXML
-	private Button edit;
-	@FXML
 	private Button confirm;
 	@FXML
 	private Button cancel;
-	@FXML
-	private Button back;
-	@FXML
-	private Button deleteButton;
 
 	private static Song selectedSong;
 
@@ -69,11 +55,7 @@ public class SongViewController {
 	 */
 
 	public void initialize() {
-		// Use the selected song to fill in the initial text areas
-		name.setText(selectedSong.getName());
-		artist.setText(selectedSong.getArtist());
-		album.setText(selectedSong.getAlbum());
-		year.setText(Integer.toString(selectedSong.getYear()));
+		return;
 	}
 
 	/*
@@ -83,71 +65,21 @@ public class SongViewController {
 	 */
 
 	@FXML
-	public void handleBack(ActionEvent event) {
-		Stage curr = (Stage) back.getScene().getWindow();
+	public void handleCancel(ActionEvent event) {
+		// Send back to main scene
+		Stage curr = (Stage) cancel.getScene().getWindow();
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
 			Scene newScene = new Scene(root);
 			curr.setScene(newScene);
 			curr.show();
 		} catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 
 	@FXML
-	public void handleEdit(ActionEvent event) {
-		// Change the scene to edit mode
-		name.setVisible(false);
-		artist.setVisible(false);
-		album.setVisible(false);
-		year.setVisible(false);
-		newName.setVisible(true);
-		newArtist.setVisible(true);
-		newAlbum.setVisible(true);
-		newYear.setVisible(true);
-		edit.setVisible(false);
-		confirm.setVisible(true);
-		cancel.setVisible(true);
-		back.setVisible(false);
-
-		// default edit values will be the existing name, artist, year, album
-		newName.setText(name.getText());
-		newArtist.setText(artist.getText());
-		newYear.setText(year.getText());
-		newAlbum.setText(album.getText());
-
-	}
-
-	@FXML
-	public void handleCancel(ActionEvent event) {
-		// Change scene back to presentation mode
-		newName.clear();
-		newArtist.clear();
-		newYear.clear();
-		newAlbum.clear();
-		name.setVisible(true);
-		artist.setVisible(true);
-		album.setVisible(true);
-		year.setVisible(true);
-		newName.setVisible(false);
-		newArtist.setVisible(false);
-		newAlbum.setVisible(false);
-		newYear.setVisible(false);
-		edit.setVisible(true);
-		confirm.setVisible(false);
-		cancel.setVisible(false);
-		back.setVisible(true);
-	}
-
-	@FXML
 	public void handleConfirm(ActionEvent event) {
-		/*
-		 * 
-		 * bug: if you press edit, and then confirm without making changes, it doesn't
-		 * work
-		 * 
-		 */
-
 		// Grab song list and changed values, set error booleans
 		ArrayList<Song> songs = Controller.getSongs();
 		ObservableList<String> songsAndNames = Controller.getObsList();
@@ -159,7 +91,6 @@ public class SongViewController {
 		boolean yearError = false;
 		Song selectedSongClone = new Song(selectedSong.getName(), selectedSong.getArtist(), selectedSong.getYear(),
 				selectedSong.getAlbum());
-
 		// Check to see if song already exists
 		if (!(changedName.isEmpty() && changedArtist.isEmpty())) {
 			if (changedName.isEmpty()) {
@@ -172,9 +103,6 @@ public class SongViewController {
 			// FIXED: we can remove the current song before even checking to see if the new
 			// song exists. Add it back if the confirmation causes an error so we don't lose
 			// data
-			songs.remove(selectedSong);
-			songsAndNames.remove(selectedSong.toString());
-
 			for (Song curr : songs) {
 				if (curr.getName().equals(changedName) && curr.getArtist().equals(changedArtist)) {
 					nameError = true;
@@ -195,23 +123,17 @@ public class SongViewController {
 		}
 		// Send appropriate error or update
 		if (nameError && yearError) {
-			songs.add(selectedSongClone);
-			songsAndNames.add(selectedSongClone.toString());
 			Collections.sort(songs);
 			Collections.sort(songsAndNames);
 			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist, year must be 4 digit number",
 					ButtonType.OK);
 			alert.showAndWait();
 		} else if (nameError) {
-			songs.add(selectedSongClone);
-			songsAndNames.add(selectedSongClone.toString());
 			Collections.sort(songs);
 			Collections.sort(songsAndNames);
 			Alert alert = new Alert(AlertType.ERROR, "Song already exists in playlist", ButtonType.OK);
 			alert.showAndWait();
 		} else if (yearError) {
-			songs.add(selectedSongClone);
-			songsAndNames.add(selectedSongClone.toString());
 			Collections.sort(songs);
 			Collections.sort(songsAndNames);
 			Alert alert = new Alert(AlertType.ERROR, "Year must be 4 digit number", ButtonType.OK);
@@ -233,7 +155,8 @@ public class SongViewController {
 				changedAlbum = selectedSong.getAlbum();
 			}
 			Song newSong = new Song(changedName, changedArtist, changedYear2, changedAlbum);
-
+			songs.remove(selectedSong);
+			songsAndNames.remove(selectedSong.toString());
 			songs.add(newSong);
 			songsAndNames.add(newSong.toString());
 			Collections.sort(songs);
@@ -242,54 +165,15 @@ public class SongViewController {
 			Controller.setSongs(songs);
 			Controller.setObsList(songsAndNames);
 		}
-		// Reconfigure scene
-		name.setText(selectedSong.getName());
-		artist.setText(selectedSong.getArtist());
-		album.setText(selectedSong.getAlbum());
-		year.setText(Integer.toString(selectedSong.getYear()));
-		newName.clear();
-		newArtist.clear();
-		newYear.clear();
-		newAlbum.clear();
-		name.setVisible(true);
-		artist.setVisible(true);
-		album.setVisible(true);
-		year.setVisible(true);
-		newName.setVisible(false);
-		newArtist.setVisible(false);
-		newAlbum.setVisible(false);
-		newYear.setVisible(false);
-		edit.setVisible(true);
-		confirm.setVisible(false);
-		cancel.setVisible(false);
-		back.setVisible(true);
-	}
-
-	@FXML
-	public void handleDelete(ActionEvent event) {
-		// Needs to be tested, but this probably works
-
-		Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure?",
-				ButtonType.YES, ButtonType.CANCEL);
-		alert.showAndWait();
-		if (alert.getResult() == ButtonType.YES) {
-			ArrayList<Song> songs = Controller.getSongs();
-			ObservableList<String> songsAndNames = Controller.getObsList();
-			songsAndNames.remove(selectedSong.toString());
-			songs.remove(selectedSong);
-
-			Stage curr = (Stage) back.getScene().getWindow();
-			try {
-				Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
-				Scene newScene = new Scene(root);
-				curr.setScene(newScene);
-				curr.show();
-			} catch (Exception e) {
-			}
-		} else {
-			return;
+		// Send back to main scene
+		Stage curr = (Stage) confirm.getScene().getWindow();
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/fx/view/MainView.fxml"));
+			Scene newScene = new Scene(root);
+			curr.setScene(newScene);
+			curr.show();
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-
 	}
-
 }

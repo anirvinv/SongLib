@@ -5,21 +5,37 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@main.css" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="501.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.view.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="438.0" prefWidth="501.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.view.Controller">
    <children>
-      <ListView styleClass="songList" fx:id="listView" layoutX="27.0" layoutY="95.0" prefHeight="324.0" prefWidth="405.0" />
-      <TextField fx:id="songField" layoutX="24.0" layoutY="36.0" prefHeight="26.0" prefWidth="80.0" />
-      <TextField fx:id="artistField" layoutX="112.0" layoutY="35.0" prefHeight="26.0" prefWidth="90.0" />
-      <TextField fx:id="yearField" layoutX="216.0" layoutY="36.0" prefHeight="26.0" prefWidth="66.0" />
-      <TextField fx:id="albumField" layoutX="298.0" layoutY="36.0" prefHeight="26.0" prefWidth="90.0" />
+      <ListView fx:id="listView" layoutX="24.0" layoutY="93.0" prefHeight="324.0" prefWidth="243.0" styleClass="songList" />
+      <TextField fx:id="songField" layoutX="24.0" layoutY="36.0" prefHeight="26.0" prefWidth="90.0" />
+      <TextField fx:id="artistField" layoutX="129.0" layoutY="36.0" prefHeight="26.0" prefWidth="90.0" />
+      <TextField fx:id="yearField" layoutX="236.0" layoutY="36.0" prefHeight="26.0" prefWidth="66.0" />
+      <TextField fx:id="albumField" layoutX="321.0" layoutY="36.0" prefHeight="26.0" prefWidth="90.0" />
      
-      <Label layoutX="24.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Song name" />
-      <Label layoutX="112.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Artist name" />
-      <Label layoutX="216.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Year" />
-      <Label layoutX="298.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Album" />
+      <Label layoutX="25.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Song name" />
+      <Label layoutX="130.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Artist name" />
+      <Label layoutX="237.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Year" />
+      <Label layoutX="322.0" layoutY="14.0" prefHeight="18.0" prefWidth="90.0" text="Album" />
       
-      <Button layoutX="394.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleAddSong" text="Add" />
+      <Button layoutX="431.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleAddSong" text="Add" />
+      <Label alignment="CENTER" layoutX="317.0" layoutY="93.0" prefHeight="18.0" prefWidth="131.0" text="Selected Details:" textAlignment="CENTER" />
+      <Label fx:id="nameLabel" layoutX="288.0" layoutY="148.0" text="Name:" />
+      <Label fx:id="artistLabel" layoutX="288.0" layoutY="193.0" text="Artist:" />
+      <Label fx:id="yearLabel" layoutX="288.0" layoutY="237.0" text="Year:" />
+      <Label fx:id="albumLabel" layoutX="288.0" layoutY="283.0" text="Album:" />
+      <Button fx:id="editButton" layoutX="306.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleEdit" prefHeight="34.0" prefWidth="66.0" text="Edit" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="deleteButton" layoutX="397.0" layoutY="355.0" mnemonicParsing="false" onAction="#handleDelete" prefHeight="34.0" prefWidth="66.0" text="Delete" visible="false">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
       
 
    </children>
