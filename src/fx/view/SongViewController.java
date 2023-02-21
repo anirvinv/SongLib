@@ -74,6 +74,7 @@ public class SongViewController {
 		artist.setText(selectedSong.getArtist());
 		album.setText(selectedSong.getAlbum());
 		year.setText(Integer.toString(selectedSong.getYear()));
+		Controller.setSelectedSongIndex(Controller.getSongs().indexOf(selectedSong));
 	}
 
 	/*
@@ -275,6 +276,13 @@ public class SongViewController {
 		if (alert.getResult() == ButtonType.YES) {
 			ArrayList<Song> songs = Controller.getSongs();
 			ObservableList<String> songsAndNames = Controller.getObsList();
+
+			// if its the last song, then set it to the previous one. If not, then leave it
+			// cuz it automatically goes to the next one when its deleted
+			if (Controller.getSelectedSongIndex() == songs.size() - 1) {
+				Controller.setSelectedSongIndex(Controller.getSelectedSongIndex() - 1);
+			}
+
 			songsAndNames.remove(selectedSong.toString());
 			songs.remove(selectedSong);
 
